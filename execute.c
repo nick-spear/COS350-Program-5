@@ -17,6 +17,7 @@ int execute(char *argv[])
   int	pid ;
   int	child_info = -1;
 
+  // Continues iterating through zombie processes until none are left over
   int prev;
   int bg_processes_ended = 0;
   do {
@@ -25,12 +26,14 @@ int execute(char *argv[])
     if ( prev == 0 ) bg_processes_ended++;
   } while ( prev == 0 );
 
+  // Prints appropriate 'finished' message
   if (bg_processes_ended == 1) {
     printf("Background process ended.\n");
   } else if (bg_processes_ended > 1) {
     printf("%d background processes ended.\n", bg_processes_ended);
   }
 
+  // Looks for childless commands of exit/cd
   if ( argv[0] == NULL )		/* nothing succeeds	*/
     return 0;
   else if ( strcmp(argv[0], "exit") == 0 )
@@ -43,6 +46,7 @@ int execute(char *argv[])
     return 0;
   }
 
+  // Looks for background flag, removes if existing
   int lastindex, bg_flag = 0;
   for (lastindex = 0; argv[lastindex+1] != NULL; lastindex++);
   if ( strcmp(argv[lastindex], "&") == 0) {
@@ -53,10 +57,6 @@ int execute(char *argv[])
   if ( (pid = fork())  == -1 )
     perror("fork");
   else if ( pid == 0 ) {
-
-    if ( strcmp(argv[0], "cd") == 0 ) {
-      printf("You tried a cd!\n");
-    }
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
     execvp(argv[0], argv);
@@ -64,6 +64,7 @@ int execute(char *argv[])
     exit(1);
   }
   else {
+    // Doesn't wait if background flag was present
     if ( !bg_flag ) {
       if (waitpid(pid, &child_info, 0) == -1)
         perror("wait");

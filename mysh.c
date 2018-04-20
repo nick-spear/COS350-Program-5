@@ -10,7 +10,7 @@
 #include <signal.h>
 #include "mysh.h"
 
-char *prompt;
+#define SHELL_PROMPT "SpearSh~> "
 
 int main()
 {
@@ -18,9 +18,10 @@ int main()
   int	result;
   void	setup();
 
+  prompt = SHELL_PROMPT;
   setup();
 
-  while ( (cmdline = next_cmd((char*)getenv("myshPS"), stdin)) != NULL ){
+  while ( (cmdline = next_cmd(prompt, stdin)) != NULL ){
     if ( (arglist = splitline(cmdline)) != NULL  ){
       result = execute(arglist);
       freelist(arglist);
@@ -36,7 +37,6 @@ void setup()
  * returns: nothing. calls fatal() if trouble
  */
 {
-  setenv("myshPS", "> ", 1);
   signal(SIGINT,  SIG_IGN);
   signal(SIGQUIT, SIG_IGN);
 }
