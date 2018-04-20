@@ -1,0 +1,54 @@
+Script started on Fri 20 Apr 2018 12:01:58 AM EDT
+]0;spear@spear: ~/Desktop/Program5spear@spear:~/Desktop/Program5$ ./mysh
+SpearSh~> ls
+execute.c  Makefile  mysh.c  mysh.o	  splitline.o
+execute.o  mysh      mysh.h  splitline.c  typescript
+SpearSh~> date
+Fri Apr 20 00:02:05 EDT 2018
+SpearSh~> bogus
+cannot execute command: No such file or directory
+SpearSh~> exit
+]0;spear@spear: ~/Desktop/Program5spear@spear:~/Desktop/Program5$ ./mysh
+SpearSh~> exit 7
+]0;spear@spear: ~/Desktop/Program5spear@spear:~/Desktop/Program5$ echo $?
+7
+]0;spear@spear: ~/Desktop/Program5spear@spear:~/Desktop/Program5$ ./mysh
+SpearSh~> pwd
+/home/spear/Desktop/Program5
+SpearSh~> cd ..
+SpearSh~> pwd
+/home/spear/Desktop
+SpearSh~> cd /usr/bin
+SpearSh~> pwd
+/usr/bin
+SpearSh~> cd bogus
+cannot execute command: No such file or directory
+SpearSh~> pwd
+/usr/bin
+SpearSh~> cd
+SpearSh~> pwd
+/home
+SpearSh~> sleep 10 &
+Process started in background.
+SpearSh~> ps -l
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+0 S  1000  5521  5520  0  80   0 -  5671 wait   pts/2    00:00:00 bash
+0 S  1000  5538  5521  0  80   0 -  1089 wait   pts/2    00:00:00 mysh
+0 S  1000  5558  5538  0  80   0 -  1822 hrtime pts/2    00:00:00 sleep
+4 R  1000  5559  5538  0  80   0 -  7229 -      pts/2    00:00:00 ps
+SpearSh~> ps -l
+Background process ended.
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+0 S  1000  5521  5520  0  80   0 -  5671 wait   pts/2    00:00:00 bash
+0 S  1000  5538  5521  0  80   0 -  1089 wait   pts/2    00:00:00 mysh
+4 R  1000  5561  5538  0  80   0 -  7229 -      pts/2    00:00:00 ps
+SpearSh~> ps -l
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+0 S  1000  5521  5520  0  80   0 -  5671 wait   pts/2    00:00:00 bash
+0 S  1000  5538  5521  0  80   0 -  1089 wait   pts/2    00:00:00 mysh
+4 R  1000  5562  5538  0  80   0 -  7229 -      pts/2    00:00:00 ps
+SpearSh~> exit
+]0;spear@spear: ~/Desktop/Program5spear@spear:~/Desktop/Program5$ exit
+exit
+
+Script done on Fri 20 Apr 2018 12:03:34 AM EDT

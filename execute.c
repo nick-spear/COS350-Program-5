@@ -37,11 +37,18 @@ int execute(char *argv[])
   if ( argv[0] == NULL )		/* nothing succeeds	*/
     return 0;
   else if ( strcmp(argv[0], "exit") == 0 )
-    exit(atoi(argv[1]));
+    if (argv[1] == NULL)
+      exit(0);
+    else
+      exit(atoi(argv[1]));
   else if ( strcmp(argv[0], "cd") == 0 ) {
-    if ( chdir(argv[1]) == -1 ) {
-      perror("cannot execute command");
-      return -1;
+    if (argv[1] == NULL)
+      chdir("/home");
+    else {
+      if ( chdir(argv[1]) == -1 ) {
+        perror("cannot execute command");
+        return -1;
+      }
     }
     return 0;
   }
