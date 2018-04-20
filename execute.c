@@ -17,6 +17,20 @@ int execute(char *argv[])
   int	pid ;
   int	child_info = -1;
 
+  int prev;
+  int bg_processes_ended = 0;
+  do {
+    prev = -1;
+    waitpid(-1, &prev, WNOHANG);
+    if ( prev == 0 ) bg_processes_ended++;
+  } while ( prev == 0 );
+
+  if (bg_processes_ended == 1) {
+    printf("Background process ended.\n");
+  } else if (bg_processes_ended > 1) {
+    printf("%d background processes ended.\n", bg_processes_ended);
+  }
+
   if ( argv[0] == NULL )		/* nothing succeeds	*/
     return 0;
   else if ( strcmp(argv[0], "exit") == 0 )
@@ -29,16 +43,17 @@ int execute(char *argv[])
     return 0;
   }
 
+  int lastindex, bg_flag = 0;
+  for (lastindex = 0; argv[lastindex+1] != NULL; lastindex++);
+  if ( strcmp(argv[lastindex], "&") == 0) {
+    bg_flag = 1;
+    argv[lastindex] = NULL;
+  }
 
   if ( (pid = fork())  == -1 )
     perror("fork");
   else if ( pid == 0 ) {
-    int lastindex;
-    for (lastindex = 0; argv[lastindex+1] != NULL; lastindex++);
 
-    if ( strcmp(argv[lastindex], "&") == 0) {
-      printf("I see that &\n");
-    }
     if ( strcmp(argv[0], "cd") == 0 ) {
       printf("You tried a cd!\n");
     }
@@ -49,8 +64,12 @@ int execute(char *argv[])
     exit(1);
   }
   else {
-    if ( wait(&child_info) == -1 )
-      perror("wait");
+    if ( !bg_flag ) {
+      if (waitpid(pid, &child_info, 0) == -1)
+        perror("wait");
+    } else {
+      printf("Process started in background.\n");
+    }
   }
   return child_info;
 }
